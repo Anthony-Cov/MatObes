@@ -1,10 +1,7 @@
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import MinMaxScaler, StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 import random
-from tqdm import tqdm
-from scipy.spatial.distance import pdist, squareform
 
 PATH = '../data/finance.csv'
 
@@ -54,12 +51,12 @@ def get_time_series_data():
 
     df = pd.read_csv('../data/finance.csv')
     window = 10
-    finance_time_series = df['Сумма'].rolling(window=window).mean()[window-1:][:851]
+    finance_time_series = df['Сумма'].rolling(window=window).mean()[window - 1:][:851]
     finance_time_series = MinMaxScaler().fit_transform(finance_time_series.values.reshape(-1, 1)).flatten()
-    dates = pd.to_datetime(df['Время'], format='%d.%m.%Y').values[window-1:][:851]
+    dates = pd.to_datetime(df['Время'], format='%d.%m.%Y').values[window - 1:][:851]
 
     deposit = MoneyGame(1000)
-    deposit.game(num_iterations=851 - window - 1 )
+    deposit.game(num_iterations=851 - window - 1)
     random_time_series = MinMaxScaler().fit_transform(deposit.history.reshape(-1, 1)).flatten()
 
     return finance_time_series, random_time_series, dates
